@@ -178,9 +178,6 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-  useEffect(() => {
-    console.log("DATA LISTS", dataLists);
-  }, [dataLists]);
 
   const handleAddNewTodo = (content: string) => {
     if (!content) return;

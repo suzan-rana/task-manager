@@ -84,7 +84,7 @@ const DeleteModal = () => {
           Are you sure you want to delete this task?
         </p>
         <div className="flex w-[80%] mx-auto justify-between gap-6">
-          <Button onClick={handleCloseDeleteMenu}>Cancel</Button>
+          <Button className="bg-slate-800" onClick={handleCloseDeleteMenu}>Cancel</Button>
           <Button
             onClick={() => {
               handleDeleteTask(deleteModal?.taskId, deleteModal?.columnId);
@@ -105,7 +105,7 @@ const Button = ({ className, children, ...restProps }: ButtonProps) => {
   return (
     <button
       {...restProps}
-      className={`py-2 grow px-3  bg-slate-800 rounded-md ${className}`}
+      className={`py-2 grow px-3  rounded-md ${className}`}
     >
       {children}
     </button>
