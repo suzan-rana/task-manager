@@ -185,7 +185,6 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
     console.log("DATA LISTS", dataLists);
   }, [dataLists]);
 
-
   const handleAddNewTodo = (content: string) => {
     if (!content) return;
     let totalTasks = Object.keys(dataLists.tasks).length;
@@ -257,9 +256,9 @@ interface TypeDataList {
 export const initialData = {
   // tasks
   tasks: {
-    "task-1": { id: "task-1", content: "Make a kanban board application" },
-    "task-2": { id: "task-2", content: "Work on Blogging platform" },
-    "task-3": { id: "task-3", content: "Plan about Ms-Paint application" },
+    "task-1": { id: "task-1", content: "You can make todos with this app." },
+    "task-2": { id: "task-2", content: "Work is in Progress." },
+    "task-3": { id: "task-3", content: "Work is Done." },
   },
   // columns
   columns: {
@@ -268,21 +267,21 @@ export const initialData = {
       title: "To do",
 
       // also look their order
-      taskIds: ["task-1", "task-2", "task-3"],
+      taskIds: ["task-1"],
     },
     "column-2": {
       id: "column-2",
       title: "Inprogress",
 
       // also look their order
-      taskIds: [],
+      taskIds: ["task-2"],
     },
     "column-3": {
       id: "column-3",
       title: "Done",
 
       // also look their order
-      taskIds: [],
+      taskIds: ["task-3"],
     },
   },
 
