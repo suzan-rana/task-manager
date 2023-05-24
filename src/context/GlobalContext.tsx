@@ -7,6 +7,8 @@ import {
   useState,
 } from "react";
 import { DropResult } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from 'uuid';
+
 
 interface TypeGlobalContext {
   dataLists: TypeDataList;
@@ -140,12 +142,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         [current]: dataLists.tasks[current as keyof typeof dataLists.tasks],
       };
     }, {});
-    // let title =
-    //   columnId === "column-1"
-    //     ? "To do"
-    //     : columnId === "Inprogress"
-    //     ? "Inprogress"
-    //     : "Done";
+
     let title = "";
     switch (columnId) {
       case "column-1": {
@@ -157,7 +154,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         break;
       }
       case "column-3": {
-        title: "Done";
+        title = "Done";
         break;
       }
     }
@@ -187,11 +184,10 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   const handleAddNewTodo = (content: string) => {
     if (!content) return;
-    let totalTasks = Object.keys(dataLists.tasks).length;
-    let taskName = `task-${totalTasks + 1}`;
+    let taskName = `task-${uuidv4()}`;
     let newTask = {
       [taskName]: {
-        id: [taskName],
+        id: taskName,
         content,
       },
     };

@@ -34,7 +34,7 @@ const TaskColumn = ({
       <Droppable droppableId={columnId}>
         {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => (
           <article
-            className={`flex flex-col  overflow-y-auto grow min-w-[32%] border-[2px]  transition-colors  rounded-lg   py-6 px-6 pb-16 ${
+            className={`flex flex-col min-w-[300px] overflow-y-auto grow w-[32%] border-[2px]  transition-colors  rounded-lg   py-6 px-6 pb-16 ${
               snapshot.isDraggingOver
                 ? "border-green-500 bg-zinc-900"
                 : "bg-slate-800"

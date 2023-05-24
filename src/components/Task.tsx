@@ -49,11 +49,11 @@ const Task = ({ task, index, columnId }: Props) => {
                 handleMenuClick(e, task.id);
               }}
             />
-            {/* {openSideMenu && (
+            {openSideMenu && (
               <div ref={sideMenuRef}>
                 <SideMenu setOpenSideMenu={setOpenSideMenu} columnId={columnId} taskId={task.id} />
               </div>
-            )} */}
+            )}
           </div>
         )}
       </Draggable>
