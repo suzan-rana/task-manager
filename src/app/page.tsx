@@ -25,7 +25,7 @@ const Home = (props: Props) => {
   return (
     <main>
       {openMenuItems.deleteModal?.taskId && <DeleteModal />}
-      <h1 className="text-center font-bold text-3xl capitalize my-4">
+      <h1 className="text-center font-bold text-3xl capitalize mt-12 mb-8">
         Task Manager
       </h1>
       <div className="flex items-stretch min-h-[30rem] justify-between gap-12 my-8">
