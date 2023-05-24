@@ -50,7 +50,7 @@ const TaskColumn = ({
             )}
 
             {taskLists.map((task, index) => (
-              <Task key={task.id} task={task} index={index} />
+              <Task columnId={columnId} key={task.id} task={task} index={index} />
             ))}
             {provided.placeholder}
           </article>

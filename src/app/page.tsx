@@ -24,7 +24,7 @@ const Home = (props: Props) => {
 
   return (
     <main>
-      {openMenuItems.deleteModal && <DeleteModal />}
+      {openMenuItems.deleteModal?.taskId && <DeleteModal />}
       <h1 className="text-center font-bold text-3xl capitalize my-4">
         Task Manager
       </h1>
@@ -57,14 +57,22 @@ const Home = (props: Props) => {
 export default Home;
 
 const DeleteModal = () => {
-  const { setOpenMenuItems } = useGlobalContext();
+  const { setOpenMenuItems, openMenuItems, handleDeleteTask } =
+    useGlobalContext();
   const deleteModalRef = useRef<HTMLDivElement>(null);
   useOnClickOutside(deleteModalRef, (e) => {
+    handleCloseDeleteMenu();
+  });
+  const handleCloseDeleteMenu = () => {
     setOpenMenuItems((prev: TModalItems) => ({
       ...prev,
       deleteModal: null,
     }));
-  });
+  };
+  const { deleteModal } = openMenuItems;
+  if (!deleteModal?.columnId || !deleteModal?.taskId) {
+    return <></>;
+  }
   return (
     <Modal>
       <div
@@ -76,8 +84,16 @@ const DeleteModal = () => {
           Are you sure you want to delete this task?
         </p>
         <div className="flex w-[80%] mx-auto justify-between gap-6">
-          <Button>Cancel</Button>
-          <Button className="bg-red-500">Delete</Button>
+          <Button onClick={handleCloseDeleteMenu}>Cancel</Button>
+          <Button
+            onClick={() => {
+              handleDeleteTask(deleteModal?.taskId, deleteModal?.columnId);
+              handleCloseDeleteMenu();
+            }}
+            className="bg-red-500"
+          >
+            Delete
+          </Button>
         </div>
       </div>
     </Modal>

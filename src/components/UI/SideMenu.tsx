@@ -1,25 +1,33 @@
-import React, { useState } from "react";
+import React, { SetStateAction, useState } from "react";
 import Modal from "./Modal";
 import { useGlobalContext } from "@/context/GlobalContext";
 
 type Props = {
   taskId: string;
+  columnId: string;
+  setOpenSideMenu: React.Dispatch<SetStateAction<boolean>>;
 };
 
-const SideMenu = ({ taskId }: Props) => {
+const SideMenu = ({ taskId, columnId, setOpenSideMenu }: Props) => {
   const { handleOpenMenuItems } = useGlobalContext();
 
   return (
     <>
       <div className="absolute right-[2rem] z-50 flex flex-col py-2 px-2 bg-slate-700 rounded-md bottom-[-4rem] ">
         <p
-          onClick={() => handleOpenMenuItems("EDIT", taskId)}
+          onClick={() => {
+            handleOpenMenuItems("EDIT", taskId, columnId);
+            setOpenSideMenu(false);
+          }}
           className="py-2 px-4 text-left hover:bg-slate-500 rounded-md"
         >
           Edit Task
         </p>
         <p
-          onClick={() => handleOpenMenuItems("DELETE", taskId)}
+          onClick={() => {
+            handleOpenMenuItems("DELETE", taskId, columnId);
+            setOpenSideMenu(false);
+          }}
           className="py-2 px-4 text-left hover:bg-slate-500 rounded-md"
         >
           Delete Task

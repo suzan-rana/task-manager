@@ -13,11 +13,12 @@ import Modal from "./UI/Modal";
 type Props = {
   task: TypeTask;
   index: number;
+  columnId: string;
 };
 
-const Task = ({ task, index }: Props) => {
+const Task = ({ task, index, columnId }: Props) => {
   const [openSideMenu, setOpenSideMenu] = useState<boolean>(false);
- 
+
   const handleMenuClick = (
     e: React.MouseEvent<SVGElement, MouseEvent>,
     taskId: string
@@ -48,13 +49,11 @@ const Task = ({ task, index }: Props) => {
                 handleMenuClick(e, task.id);
               }}
             />
-            {openSideMenu && (
+            {/* {openSideMenu && (
               <div ref={sideMenuRef}>
-                <SideMenu
-                  taskId={task.id}
-                />
+                <SideMenu setOpenSideMenu={setOpenSideMenu} columnId={columnId} taskId={task.id} />
               </div>
-            )}
+            )} */}
           </div>
         )}
       </Draggable>

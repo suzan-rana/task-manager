@@ -3,23 +3,32 @@ import {
   SetStateAction,
   createContext,
   useContext,
+  useEffect,
   useState,
 } from "react";
 import { DropResult } from "react-beautiful-dnd";
 
 interface TypeGlobalContext {
   dataLists: TypeDataList;
-  openMenuItems: {
-    editModal: string | null;
-    deleteModal: string | null;
-  };
+  openMenuItems: TModalItems;
   handleDragEnd: (result: DropResult) => void;
   handleAddNewTodo: (content: string) => void;
   setOpenMenuItems: React.Dispatch<SetStateAction<any>>;
-  handleOpenMenuItems: (modalName: "EDIT" | "DELETE", taskId: string) => void;
+  handleDeleteTask: (taskId: string, columnId: string) => void;
+  handleOpenMenuItems: (
+    modalName: "EDIT" | "DELETE",
+    taskId: string,
+    columnId: string
+  ) => void;
 }
 
-export type TModalItems = Record<"editModal" | "deleteModal", string | null>;
+export type TModalItems = Record<
+  "editModal" | "deleteModal",
+  {
+    taskId: string;
+    columnId: string;
+  } | null
+>;
 export const GlobalContext = createContext<TypeGlobalContext>(null as any);
 export const useGlobalContext = () =>
   useContext(GlobalContext) as TypeGlobalContext;
@@ -31,23 +40,30 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
   });
   const handleOpenMenuItems = (
     modalName: "EDIT" | "DELETE",
-    taskId: string
+    taskId: string,
+    columnId: string
   ) => {
     if (modalName === "EDIT") {
       setOpenMenuItems((prev) => ({
         ...prev,
-        editModal: taskId,
+        editModal: {
+          columnId,
+          taskId,
+        },
       }));
     } else {
       setOpenMenuItems((prev) => ({
         ...prev,
-        deleteModal: taskId,
+        deleteModal: {
+          columnId,
+          taskId,
+        },
       }));
     }
   };
 
   // data lists
-  const [dataLists, setDataLists] = useState(initialData);
+  const [dataLists, setDataLists] = useState<typeof initialData>(initialData);
 
   const handleDragEnd = (result: DropResult) => {
     if (result.destination === null || !result.destination) return;
@@ -112,8 +128,9 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
   };
 
   // delete a task
-  const handleDeleteTask = (taskId: string) => {
-    const newTasks = Object.keys(dataLists.tasks).reduce((acc, current) => {
+  const handleDeleteTask = (taskId: string, columnId: string) => {
+    console.log("TASK AND COLUMN", { taskId, columnId });
+    let newTasks = Object.keys(dataLists.tasks).reduce((acc, current) => {
       if (current === taskId)
         return {
           ...acc,
@@ -123,11 +140,51 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         [current]: dataLists.tasks[current as keyof typeof dataLists.tasks],
       };
     }, {});
-    // setDataLists((prev) => ({
-    //   ...prev,
-    //   tasks:
-    // }))
+    // let title =
+    //   columnId === "column-1"
+    //     ? "To do"
+    //     : columnId === "Inprogress"
+    //     ? "Inprogress"
+    //     : "Done";
+    let title = "";
+    switch (columnId) {
+      case "column-1": {
+        title = "To do";
+        break;
+      }
+      case "column-2": {
+        title = "Inprogress";
+        break;
+      }
+      case "column-3": {
+        title: "Done";
+        break;
+      }
+    }
+    const newColumn = {
+      [columnId]: {
+        id: columnId,
+        title,
+        taskIds: dataLists.columns[
+          columnId as keyof typeof dataLists.columns
+        ].taskIds.filter((tId: string) => tId !== taskId),
+      },
+    };
+    // sorry guys, I was not ready [SORRY FOR THE ANY'S]
+    setDataLists((prev: any) => ({
+      ...prev,
+      tasks: newTasks,
+      columns: {
+        ...prev["columns"],
+        ...newColumn,
+      },
+    }));
   };
+
+  useEffect(() => {
+    console.log("DATA LISTS", dataLists);
+  }, [dataLists]);
+
 
   const handleAddNewTodo = (content: string) => {
     if (!content) return;
@@ -165,6 +222,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         dataLists,
         handleDragEnd,
         handleAddNewTodo,
+        handleDeleteTask,
       }}
     >
       {children}
@@ -229,4 +287,4 @@ export const initialData = {
   },
 
   columnOrder: ["column-1", "column-2", "column-3"],
-};  
+};
