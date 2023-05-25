@@ -76,6 +76,18 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
   // data lists
   const [dataLists, setDataLists] = useState<typeof initialData>(initialData);
 
+  useEffect(() => {
+    setDataLists(
+      JSON.parse(
+        localStorage.getItem("dataLists") || JSON.stringify(initialData)
+      )
+    );
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem("dataLists", JSON.stringify(dataLists));
+  }, [dataLists.columns, dataLists.tasks]);
+
   const handleDragEnd = (result: DropResult) => {
     if (result.destination === null || !result.destination) return;
 

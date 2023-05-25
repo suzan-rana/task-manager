@@ -32,11 +32,10 @@ const TaskColumn = ({
   return (
     <>
       <Droppable droppableId={columnId}>
-        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) =>
-        {
-          return  (
+        {(provided: DroppableProvided, snapshot: DroppableStateSnapshot) => {
+          return (
             <article
-              className={`flex flex-col relative min-w-[300px] overflow-y-auto grow w-[32%] border-[2px]  transition-colors  rounded-lg   py-6 px-6 pb-16 ${
+              className={`relative flex flex-col min-w-[300px] overflow-y-auto grow w-[32%] border-[2px]  transition-colors  rounded-lg   py-6 px-6 pb-16 ${
                 snapshot.isDraggingOver
                   ? "border-green-500 bg-zinc-900"
                   : "bg-slate-800"
@@ -44,13 +43,13 @@ const TaskColumn = ({
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
-              <h3 className="text-center font-bold mb-4 mt-2 text-xl capitalize">
+              <h3 className="text-center block font-bold mb-6 mt-2 text-xl capitalize">
                 {column.title}
               </h3>
               {column.title === "To do" && (
                 <Input placeholder="Create new todo" cb={handleAddNewTodo} />
               )}
-  
+
               {taskLists.map((task, index) => (
                 <Task
                   columnId={columnId}
@@ -61,9 +60,8 @@ const TaskColumn = ({
               ))}
               {provided.placeholder}
             </article>
-          )
-        }
-       }
+          );
+        }}
       </Droppable>
     </>
   );
