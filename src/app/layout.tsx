@@ -21,6 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <title>Task Manager</title>
       <GlobalProvider>
         <body className={`${p.className} sm:min-w-[1000px] px-[2rem] md:w-[80%]  mx-auto overflow-x-auto`}>
           {children}
