@@ -21,12 +21,13 @@ const EditModal = (props: Props) => {
       editModal: null,
     }));
   };
+  const [inputValue, setInputValue] = useState(
+    editModal?.taskContent?.toString() || ""
+  );
   if (!editModal?.taskId || !editModal.taskContent) {
     return <></>;
   }
-  const [inputValue, setInputValue] = useState(
-    editModal.taskContent?.toString() || ""
-  );
+
   return (
     <Modal>
       <div
