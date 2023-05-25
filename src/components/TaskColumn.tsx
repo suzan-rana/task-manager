@@ -45,12 +45,15 @@ const TaskColumn = ({
             <h3 className="text-center font-bold mb-4 mt-2 text-xl capitalize">
               {column.title}
             </h3>
-            {column.title === "To do" && (
-              <Input handleAddNewTodo={handleAddNewTodo} />
-            )}
+            {column.title === "To do" && <Input placeholder="Create new todo" cb={handleAddNewTodo} />}
 
             {taskLists.map((task, index) => (
-              <Task columnId={columnId} key={task.id} task={task} index={index} />
+              <Task
+                columnId={columnId}
+                key={task.id}
+                task={task}
+                index={index}
+              />
             ))}
             {provided.placeholder}
           </article>

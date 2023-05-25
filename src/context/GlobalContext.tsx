@@ -7,8 +7,7 @@ import {
   useState,
 } from "react";
 import { DropResult } from "react-beautiful-dnd";
-import { v4 as uuidv4 } from 'uuid';
-
+import { v4 as uuidv4 } from "uuid";
 
 interface TypeGlobalContext {
   dataLists: TypeDataList;
@@ -20,7 +19,13 @@ interface TypeGlobalContext {
   handleOpenMenuItems: (
     modalName: "EDIT" | "DELETE",
     taskId: string,
-    columnId: string
+    columnId: string,
+    taskContent: string | null
+  ) => void;
+  handleEditTask: (
+    taskId: string,
+    columnId: string,
+    taskContent: string
   ) => void;
 }
 
@@ -29,6 +34,7 @@ export type TModalItems = Record<
   {
     taskId: string;
     columnId: string;
+    taskContent: string | null;
   } | null
 >;
 export const GlobalContext = createContext<TypeGlobalContext>(null as any);
@@ -43,7 +49,8 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
   const handleOpenMenuItems = (
     modalName: "EDIT" | "DELETE",
     taskId: string,
-    columnId: string
+    columnId: string,
+    taskContent: string | null
   ) => {
     if (modalName === "EDIT") {
       setOpenMenuItems((prev) => ({
@@ -51,6 +58,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         editModal: {
           columnId,
           taskId,
+          taskContent,
         },
       }));
     } else {
@@ -59,6 +67,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         deleteModal: {
           columnId,
           taskId,
+          taskContent: null,
         },
       }));
     }
@@ -178,7 +187,6 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
     }));
   };
 
-
   const handleAddNewTodo = (content: string) => {
     if (!content) return;
     let taskName = `task-${uuidv4()}`;
@@ -204,7 +212,23 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
       },
     }));
   };
-
+  // good morning, lets work on editing the task now
+  const handleEditTask = (
+    taskId: string,
+    columnId: string,
+    taskContent: string
+  ) => {
+    setDataLists((prev) => ({
+      ...prev,
+      tasks: {
+        ...prev["tasks"],
+        [taskId]: {
+          id: taskId,
+          content: taskContent,
+        },
+      },
+    }));
+  };
   return (
     <GlobalContext.Provider
       value={{
@@ -215,6 +239,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
         handleDragEnd,
         handleAddNewTodo,
         handleDeleteTask,
+        handleEditTask,
       }}
     >
       {children}

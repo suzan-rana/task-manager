@@ -51,7 +51,7 @@ const Task = ({ task, index, columnId }: Props) => {
             />
             {openSideMenu && (
               <div ref={sideMenuRef}>
-                <SideMenu setOpenSideMenu={setOpenSideMenu} columnId={columnId} taskId={task.id} />
+                <SideMenu taskContent={task.content} setOpenSideMenu={setOpenSideMenu} columnId={columnId} taskId={task.id} />
               </div>
             )}
           </div>

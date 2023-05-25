@@ -1,4 +1,6 @@
 "use client";
+import DeleteModal from "@/components/DeleteModal";
+import EditModal from "@/components/EditModal";
 import TaskColumn from "@/components/TaskColumn";
 import Modal from "@/components/UI/Modal";
 import {
@@ -25,6 +27,7 @@ const Home = (props: Props) => {
   return (
     <main>
       {openMenuItems.deleteModal?.taskId && <DeleteModal />}
+      {openMenuItems.editModal?.taskId && <EditModal />}
       <h1 className="text-center font-bold text-3xl capitalize mt-12 mb-8">
         Task Manager
       </h1>
@@ -56,58 +59,6 @@ const Home = (props: Props) => {
 
 export default Home;
 
-const DeleteModal = () => {
-  const { setOpenMenuItems, openMenuItems, handleDeleteTask } =
-    useGlobalContext();
-  const deleteModalRef = useRef<HTMLDivElement>(null);
-  useOnClickOutside(deleteModalRef, (e) => {
-    handleCloseDeleteMenu();
-  });
-  const handleCloseDeleteMenu = () => {
-    setOpenMenuItems((prev: TModalItems) => ({
-      ...prev,
-      deleteModal: null,
-    }));
-  };
-  const { deleteModal } = openMenuItems;
-  if (!deleteModal?.columnId || !deleteModal?.taskId) {
-    return <></>;
-  }
-  return (
-    <Modal>
-      <div
-        className="py-5 text-center px-5 min-w-[30rem] min-h-[18rem]"
-        ref={deleteModalRef}
-      >
-        <h1 className="text-xl font-semibold">Delete Task</h1>
-        <p className="py-12 text-lg">
-          Are you sure you want to delete this task?
-        </p>
-        <div className="flex w-[80%] mx-auto justify-between gap-6">
-          <Button className="bg-slate-800" onClick={handleCloseDeleteMenu}>Cancel</Button>
-          <Button
-            onClick={() => {
-              handleDeleteTask(deleteModal?.taskId, deleteModal?.columnId);
-              handleCloseDeleteMenu();
-            }}
-            className="bg-red-500"
-          >
-            Delete
-          </Button>
-        </div>
-      </div>
-    </Modal>
-  );
-};
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {}
-const Button = ({ className, children, ...restProps }: ButtonProps) => {
-  return (
-    <button
-      {...restProps}
-      className={`py-2 grow px-3  rounded-md ${className}`}
-    >
-      {children}
-    </button>
-  );
-};
+
+

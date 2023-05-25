@@ -1,32 +1,42 @@
-import { useState } from "react";
+import { useState, SetStateAction } from "react";
+
+interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  cb?: (content: string) => void;
+  placeholder: string;
+  defaultValue?: string;
+  setterFunction?: React.Dispatch<SetStateAction<string>>; // eq. to. setInputValue from parent
+}
 
 const Input = ({
-    handleAddNewTodo,
-  }: {
-    handleAddNewTodo: (content: string) => void;
-  }) => {
-    const [inputValue, setInputValue] = useState("");
-    return (
-      <div className=" my-4 w-[100%] flex items-center justify-between bg-slate-700/80 rounded-md transition-colors duration-500 px-4">
-        <input
-          placeholder="Create new todo"
-          tabIndex={1}
-          value={inputValue}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setInputValue(e.target.value)
-          }
-          type="text"
-          className="bg-transparent ring-0 py-3  focus:outline-none"
-          name="newtodo"
-        />
+  cb,
+  placeholder,
+  defaultValue,
+  setterFunction,
+  ...restProps
+}: InputProps) => {
+  const [inputValue, setInputValue] = useState(defaultValue || "");
+  return (
+    <div className=" my-4 w-[100%] flex items-center justify-between bg-slate-700/80 rounded-md transition-colors duration-500 px-4">
+      <input
+        placeholder={placeholder}
+        tabIndex={1}
+        value={defaultValue || inputValue}
+        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+          setterFunction?.(e.target.value) || setInputValue(e.target.value)
+        }
+        type="text"
+        className="bg-transparent ring-0 py-3 w-[90%] focus:outline-none"
+        {...restProps}
+      />
+      {cb && (
         <span
           onClick={() => {
-            handleAddNewTodo(inputValue);
+            cb?.(inputValue);
             setInputValue("");
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              handleAddNewTodo(inputValue);
+              cb?.(inputValue);
               setInputValue("");
             }
           }}
@@ -35,7 +45,8 @@ const Input = ({
         >
           +
         </span>
-      </div>
-    );
-  };
-  export default Input
+      )}
+    </div>
+  );
+};
+export default Input;
