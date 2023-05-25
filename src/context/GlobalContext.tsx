@@ -86,9 +86,10 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   useEffect(() => {
     localStorage.setItem("dataLists", JSON.stringify(dataLists));
-  }, [dataLists.columns, dataLists.tasks]);
+  }, [dataLists?.columns, dataLists?.tasks]);
 
   const handleDragEnd = (result: DropResult) => {
+    
     if (result.destination === null || !result.destination) return;
 
     if (
@@ -152,7 +153,6 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
 
   // delete a task
   const handleDeleteTask = (taskId: string, columnId: string) => {
-    console.log("TASK AND COLUMN", { taskId, columnId });
     let newTasks = Object.keys(dataLists.tasks).reduce((acc, current) => {
       if (current === taskId)
         return {
